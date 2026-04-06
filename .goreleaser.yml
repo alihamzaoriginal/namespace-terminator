@@ -1,0 +1,86 @@
+project_name: nst
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - id: nst
+    main: ./cmd/nst
+    binary: nst
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+
+archives:
+  - id: default
+    ids:
+      - nst
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- .Arch }}
+
+checksum:
+  name_template: checksums.txt
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  github:
+    owner: alihamzaoriginal
+    name: namespace-terminator
+
+brews:
+  - name: nst
+    ids:
+      - default
+    repository:
+      owner: alihamzaoriginal
+      name: homebrew-tap
+      branch: main
+    directory: Formula
+    homepage: https://github.com/alihamzaoriginal/namespace-terminator
+    description: Force terminate stuck Kubernetes namespaces
+    license: MIT
+    test: |
+      system "#{bin}/nst", "--help"
+    install: |
+      bin.install "nst"
+
+scoops:
+  - name: nst
+    ids:
+      - default
+    repository:
+      owner: alihamzaoriginal
+      name: scoop-bucket
+      branch: main
+    homepage: https://github.com/alihamzaoriginal/namespace-terminator
+    description: Force terminate stuck Kubernetes namespaces
+    license: MIT

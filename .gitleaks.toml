@@ -1,0 +1,14 @@
+title = "namespace-terminator gitleaks config"
+
+[allowlist]
+description = "Allow a few known-benign strings that can appear in docs and CI config."
+paths = [
+  '''^CHANGELOG\.md$''',
+]
+regexes = [
+  '''\$\{\{\s*secrets\.GITHUB_TOKEN\s*\}\}''',
+]
+stopwords = [
+  "kubeconfig",
+  "all-terminating",
+]
