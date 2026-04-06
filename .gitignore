@@ -1,0 +1,27 @@
+dist/
+coverage.out
+/nst
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.secrets
+secrets/
+
+# Kubernetes and cloud credentials
+kubeconfig
+*.kubeconfig
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.crt
+*.cer
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
